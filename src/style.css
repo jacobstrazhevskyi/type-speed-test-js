@@ -1,5 +1,50 @@
+body {
+    overflow-x: hidden;
+    background-color: gainsboro;
+}
+
 .words {
     border: 1px solid #000000;
     margin-top: 20%;
-    height: 200px;
+    height: max-content;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding: 5px;
+    overflow: hidden;
+    padding-left: 0;
+}
+
+.words > *:not(input) {
+    font-size: 20px;
+}
+
+.words > span:first-of-type {
+    margin-left: 50%;
+}
+
+.words > input {
+    position: absolute;
+    left: 49.4%;
+    outline: none;
+    background: none;
+    border: none;
+    height: 20px;
+}
+
+.timeBar {
+    border-radius: 0;
+}
+
+.timeBar::-webkit-progress-value {
+    background-color: green;
+    border-radius: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+    transition: 0.2s width ease;
+}
+
+.timeBar::-webkit-progress-bar {
+    background: gray;
+    box-shadow: 0 0 5px 0 black;
+    border-radius: 5%;
 }
