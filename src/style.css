@@ -68,7 +68,7 @@ input::-ms-value {
 }
 
 .over-tablet {
-    width: 500px;
+    width: 515px;
     height: 300px;
     position: absolute;
 
@@ -103,6 +103,7 @@ input::-ms-value {
     rotate: 45deg;
     top: 23px;
     right: 15px;
+    transition: transform 500ms ease-out;
 }
 
 .close-button::before {
@@ -114,11 +115,37 @@ input::-ms-value {
     rotate: -45deg;
     top: 23px;
     right: 15px;
+    transition: transform 500ms ease-out;
+}
+
+.close-button:hover::after {
+    transform: rotate(180deg);
+}
+
+.close-button:hover::before {
+    transform: rotate(-180deg);
+}
+
+.close-button:active {
+    scale: 0.8;
+    box-shadow: 0 0 20px 0px gray;
+}
+
+.close-button:active::after, .close-button:active::before {
+    top: 13px;
+    right: 5px;
 }
 
 .results {
     font-family: OpenSans;
     font-size: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    text-align: center;
+    justify-content: center;
+    grid-area: result;
+    margin-right: 30px;
 }
 
 .typing-image {
@@ -126,8 +153,59 @@ input::-ms-value {
     height: 150px;
     width: 150px;
     margin-left: 30px;
+    grid-area: typing-image;
+}
+
+.share-button {
+    grid-area: share;
+    justify-self: center;
+    cursor: pointer;
+    width: 70px;
+    margin-top: 30px;
+}
+
+.share-button:active {
+    scale: 0.9;
+    border-radius: 15%;
+    box-shadow: 0 0 15px 1px gray;
+    background-color: gray;
 }
 
 .inside-over-tablet {
-    display: flex;
+    display: grid;
+    grid-template-areas: "typing-image result"
+                         "typing-image result"
+                         "share share";
+    column-gap: 60px;
+}
+
+.url-copier {
+    position: absolute;
+    top: 200%;
+}
+
+@keyframes share-btn-animation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    10% {
+        transform: rotate(45deg);
+    }
+
+    50% {
+        transform: rotate(0deg);
+    }
+
+    60% {
+        transform: rotate(45deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+.share-button:hover {
+    animation: 800ms share-btn-animation;
 }

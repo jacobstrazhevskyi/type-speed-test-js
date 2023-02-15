@@ -20,6 +20,19 @@ const input = document.getElementById('input');
 const closeTabletButton = document.querySelector('.close-button');
 const overTablet = document.querySelector('.over-tablet');
 const screenBlocker = document.querySelector('.fullscreen-blocker');
+const resultsTablet = document.querySelector('.inside-over-tablet');
+const shareButton = document.querySelector('.share-button');
+
+shareButton.onclick = () => {
+    const elem = document.createElement('input');
+    elem.classList.add('url-copier');
+    elem.value = 'You type with the speed of 46 WPM (240 CPM). Your accuracy was 100%. Good job!';
+    document.body.append(elem);
+    elem.focus();
+    elem.select();
+    document.execCommand('cut');
+    elem.remove();
+};
 
 closeTabletButton.onclick = () => {
     overTablet.style.display = 'none';
