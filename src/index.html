@@ -8,16 +8,37 @@
     <title>JS template</title>
   </head>
   <body>
+    <div class="blinking-tablet" id="blinking-tablet">
+      <h1 class="blinking-tablet__text">PRESS ANY KEY TO START</h1>
+    </div>
     <select name="" id="select-language">
       <option value="rus">Русский</option>
       <option value="eng">English</option>
     </select>
-    <pre>
-    <div class="words" id="wordsDisplay">
-      <input type="text" id="input">
+    <div class="stats-block">
+      <div class="wpm-block">
+        <span id="wpm-display" class="stats-block__wpm">0</span>
+      </div>
+      <div class="cpm-block">
+        <span id="cpm-display" class="stats-block__cpm">0</span>
+      </div>
+      <div class="accuracy-block">
+        <span id="accuracy-display" class="stats-block__apm">100%</span>
+      </div>
+      <div class="text-block">
+        <span>chars/min</span>
+        <span>words/min</span>
+        <span>accuracy</span>
+      </div>
     </div>
+    <div>
+      <progress max="60" value="60" id="timer" class="timeBar"></progress>
+    </div>
+    <pre>
+      <div class="words" id="wordsDisplay">
+        <input type="text" id="input">
+      </div>
     </pre>
-    <progress max="60" value="60" id="timer" class="timeBar"></progress>
     <div class="over-tablet">
       <div class="close-button"></div>
         <div class="inside-over-tablet">

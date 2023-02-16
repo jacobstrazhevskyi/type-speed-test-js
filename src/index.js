@@ -14,29 +14,27 @@ import engGlossary from './glossaries/engGlossary.js';
 let time = 60;
 let intervalId;
 const timerBar = document.getElementById('timer');
+
 const wordsDisplay = document.getElementById('wordsDisplay');
 const input = document.getElementById('input');
+const blinkingTablet = document.getElementById('blinking-tablet');
 
 const closeTabletButton = document.querySelector('.close-button');
 const overTablet = document.querySelector('.over-tablet');
 const screenBlocker = document.querySelector('.fullscreen-blocker');
-const resultsTablet = document.querySelector('.inside-over-tablet');
+const resultsTablet = document.querySelector('.results');
 const shareButton = document.querySelector('.share-button');
 
-shareButton.onclick = () => {
-    const elem = document.createElement('input');
-    elem.classList.add('url-copier');
-    elem.value = 'You type with the speed of 46 WPM (240 CPM). Your accuracy was 100%. Good job!';
-    document.body.append(elem);
-    elem.focus();
-    elem.select();
-    document.execCommand('cut');
-    elem.remove();
-};
+const wpmDisplay = document.getElementById('wpm-display');
+const cpmDisplay = document.getElementById('cpm-display');
+const accuracyDisplay = document.getElementById('accuracy-display');
 
-closeTabletButton.onclick = () => {
-    overTablet.style.display = 'none';
-    screenBlocker.style.display = 'none';
+let wpm = 0;
+let cpm = 0;
+let accuracy = 100;
+
+shareButton.onclick = () => {
+    navigator.clipboard.writeText(`You type with the speed of ${wpm} WPM (${cpm} CPM). Your accuracy was ${accuracy}%. Good job!`);
 };
 
 let marg = document.body.clientWidth / 2;
@@ -60,17 +58,12 @@ engUnicodeCodes.push(189);
 
 const selectLanguage = document.getElementById('select-language');
 
-input.focus();
-
 console.log('z'.charCodeAt());
 
 let wordNowIndex = 1;
 let wordNowLetterIndex = 0;
 let wordWrited = false;
 let writtenWord = '';
-
-let wpm = 0;
-let cpm = 0;
 
 const ruKeys = [70, 188, 68, 85, 76, 84, 192, 186, 80, 66, 81, 82, 75, 86, 89, 74, 71, 72, 67, 78, 69, 65, 219, 87, 88, 73, 79, 221, 83, 77, 222, 190, 90, 189];
 
@@ -85,6 +78,10 @@ const languages = {
     rus: ruGlossary,
     eng: engGlossary,
 };
+
+function percentCorrectnessCalculationFunction(wrongLetters, correctLetters) {
+    return Math.round(100 - (wrongLetters / correctLetters * 100));
+}
 
 function generateWordArray() {
     for (let i = 0; i < 100; i++) {
@@ -104,6 +101,8 @@ function clearWordDisplay() {
         wordsDisplay.children[i].remove();
     }
 }
+
+let wrongLetters = 0;
 
 function listener(evt) {
     let wordNow = '';
@@ -128,11 +127,11 @@ function listener(evt) {
                 wordsDisplay.children[wordNowIndex].children[wordNowLetterIndex].setAttribute('style', 'opacity: 0.1;');
                 wordNowLetterIndex++;
                 marg -= 11;
-                cpm++;
                 writtenWord += evt.key;
             } else {
                 wordsDisplay.children[wordNowIndex].children[wordNowLetterIndex].setAttribute('style', 'color: red;');
                 wordNowLetterIndex++;
+                wrongLetters++;
                 marg -= 11;
                 writtenWord += evt.key;
             }
@@ -142,12 +141,12 @@ function listener(evt) {
             if (wordsDisplay.children[wordNowIndex].children[wordNowLetterIndex].textContent === evt.key) {
                 wordsDisplay.children[wordNowIndex].children[wordNowLetterIndex].setAttribute('style', 'opacity: 0.1;');
                 wordNowLetterIndex++;
-                cpm++;
                 marg -= 11;
                 writtenWord += evt.key;
             } else {
                 wordsDisplay.children[wordNowIndex].children[wordNowLetterIndex].setAttribute('style', 'color: red;');
                 wordNowLetterIndex++;
+                wrongLetters++;
                 marg -= 11;
                 writtenWord += evt.key;
             }
@@ -156,6 +155,7 @@ function listener(evt) {
     
     if (writtenWord === wordNow) {
         wpm++;
+        accuracy = percentCorrectnessCalculationFunction(wrongLetters, cpm);
     }
 
     if (writtenWord.length === wordNow.length) {
@@ -167,6 +167,10 @@ function listener(evt) {
         wordNowIndex++;
         wordWrited = false;
         wordNowLetterIndex = 0;
+        cpm += wordNow.length - 1;
+        cpmDisplay.textContent = cpm;
+        wpmDisplay.textContent = wpm;
+        accuracyDisplay.textContent = `${accuracy}`;
     }
     wordsDisplay.children[1].setAttribute('style', `margin-left:${marg}px;`);
 
@@ -178,10 +182,12 @@ function listener(evt) {
 }
 
 function start() {
+    blinkingTablet.style.display = 'none';
+    input.focus();
     document.removeEventListener('keypress', start);
     console.log('removed');
     document.addEventListener('keydown', listener);
-    time = 2;
+    time = 60;
     timerBar.value = 60;
     wordsDisplay.children[1].setAttribute('style', 'margin-left: 50%;');
     marg = document.body.clientWidth / 2;
@@ -189,19 +195,43 @@ function start() {
     intervalId = setInterval(startCount, 1000);
 }
 
+closeTabletButton.onclick = () => {
+    overTablet.style.display = 'none';
+    screenBlocker.style.display = 'none';
+    cpm = 0;
+    wpm = 0;
+    accuracy = 0;
+    // i dont know, how to fix bug with clearing display, and i do that))
+    clearWordDisplay();
+    clearWordDisplay();
+    clearWordDisplay();
+    clearWordDisplay();
+    clearWordDisplay();
+    generateWordArray();
+    blinkingTablet.style.display = 'block';
+    document.addEventListener('keypress', start);
+    cpmDisplay.textContent = cpm;
+    wpmDisplay.textContent = wpm;
+    accuracyDisplay.textContent = accuracy;
+};
+
 function tick() {
     if (time === 0) {
         clearInterval(intervalId);
-        console.log('Time is out!');
-        document.removeEventListener('keypress', listener);
-        document.addEventListener('keypress', start);
+        document.removeEventListener('keydown', listener);
         wordsDisplay.children[1].setAttribute('style', 'transition: all 1s ease-in-out; margin-left: 50%;');
+        resultsTablet.innerHTML = `
+        <b id="tosel">Neat!</b>
+        <br>
+        You type with the speed of
+        ${wpm} WPM (${cpm} CPM).
+        <br>
+        Your accuracy was ${accuracy}%. Good job!`;
         overTablet.style.display = 'flex';
         wordNowIndex = 1;
         wordNowLetterIndex = 0;
         wordWrited = false;
         writtenWord = '';
-        clearWordDisplay();
     }
     if (time > 0) {
         time--;
@@ -245,6 +275,7 @@ selectLanguage.onchange = () => {
     clearInterval(intervalId);
     document.removeEventListener('keypress', listener);
     document.addEventListener('keypress', start);
+    blinkingTablet.style.display = 'block';
     console.log(wordsDisplay.children);
     console.log(wordsDisplay);
 };

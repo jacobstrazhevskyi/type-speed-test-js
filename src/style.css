@@ -8,6 +8,10 @@ body {
     background-color: gainsboro;
 }
 
+input::first-line {
+    color:transparent;
+}
+
 .words {
     border: 1px solid #000000;
     margin-top: 20%;
@@ -35,10 +39,14 @@ body {
     background: none;
     border: none;
     height: 20px;
+    font-size: 20px;
 }
 
 .timeBar {
+    position: absolute;
     border-radius: 0;
+    margin-left: 45%;
+    margin-top: 18%;
 }
 
 .timeBar::-webkit-progress-value {
@@ -65,6 +73,7 @@ input::-ms-value {
     z-index: 1;
     top: 0;
     left: 0;
+    display: none;
 }
 
 .over-tablet {
@@ -77,7 +86,7 @@ input::-ms-value {
     box-shadow: 0px 0px 15px 5px grey;
     z-index: 2;
 
-    display: flex;
+    display: none;
     flex-direction: column;
 
     transition: 1s display ease-out;
@@ -154,6 +163,11 @@ input::-ms-value {
     width: 150px;
     margin-left: 30px;
     grid-area: typing-image;
+    outline: none;
+}
+
+.typing-image:hover {
+    outline: 1px solid red;
 }
 
 .share-button {
@@ -177,11 +191,6 @@ input::-ms-value {
                          "typing-image result"
                          "share share";
     column-gap: 60px;
-}
-
-.url-copier {
-    position: absolute;
-    top: 200%;
 }
 
 @keyframes share-btn-animation {
@@ -208,4 +217,117 @@ input::-ms-value {
 
 .share-button:hover {
     animation: 800ms share-btn-animation;
+}
+
+@keyframes blinking {
+    10% {
+        opacity: 0.8;
+    }
+
+    20% {
+        opacity: 0.6;
+    }
+
+    30% {
+        opacity: 0.4;
+    }
+
+    40% {
+        opacity: 0.2;
+    }
+    
+    50% {
+        opacity: 0.0;
+    }
+}
+
+.blinking-tablet {
+    position: absolute;
+    width: 100%;
+    height: 95px;
+    background-image: linear-gradient(gray, red, gray);
+    opacity: 0.8;
+    padding: 5px;
+    padding-left: 0;
+    margin-top: 21%;
+    text-align: center;
+}
+
+.blinking-tablet__text {
+    animation: 1s infinite blinking;
+    font-family: OpenSans;
+    letter-spacing: 3px;
+}
+
+.stats-block {
+    width: max-content;
+    height: max-content;
+    position: absolute;
+    left: 44.6%;
+    top: 30%;
+    display: grid;
+    grid-template-areas: "wpm cpm accuracy"
+                         "text text text";
+    column-gap: 5px;
+}
+
+.wpm-block {
+    height: 50px;
+    width: 50px;
+    background-image: radial-gradient(darkgray, gray, gainsboro);
+    border-radius: 50%;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-area: wpm;
+}
+
+.stats-block__wpm {
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+.cpm-block {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-area: cpm;
+    background-image: radial-gradient(darkgray, gray, gainsboro);
+}
+
+.stats-block__cpm {
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+.accuracy-block {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-area: accuracy;
+    background-image: radial-gradient(darkgray, gray, gainsboro);
+}
+
+.stats-block__apm {
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+.text-block {
+    grid-area: text;
+    font-family: OpenSans;
+    justify-self: center;
+}
+
+.text-block > *:not(:first-of-type) {
+    margin-left: 5px;
 }
