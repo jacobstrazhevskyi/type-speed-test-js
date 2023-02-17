@@ -288,6 +288,13 @@ input::-ms-value {
     font-weight: bold;
 }
 
+.stats-block__wpm::after {
+    position: absolute;
+    content: "____";
+    top: 25px;
+    left: 13px;
+}
+
 .cpm-block {
     height: 50px;
     width: 50px;
@@ -303,6 +310,13 @@ input::-ms-value {
 .stats-block__cpm {
     font-family: sans-serif;
     font-weight: bold;
+}
+
+.stats-block__cpm::after {
+    position: absolute;
+    content: "____";
+    top: 25px;
+    right: 78px;
 }
 
 .accuracy-block {
@@ -322,6 +336,13 @@ input::-ms-value {
     font-weight: bold;
 }
 
+.stats-block__apm::after {
+    position: absolute;
+    content: "____";
+    top: 25px;
+    right: 13px;
+}
+
 .text-block {
     grid-area: text;
     font-family: OpenSans;
@@ -330,4 +351,14 @@ input::-ms-value {
 
 .text-block > *:not(:first-of-type) {
     margin-left: 5px;
+}
+
+#tosel::after {
+    content: "";
+    position: absolute;
+    width: 35px;
+    height: 3px;
+    background-color: black;
+    top: 75px;
+    right: 135px;
 }
